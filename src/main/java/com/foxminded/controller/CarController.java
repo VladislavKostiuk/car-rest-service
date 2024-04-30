@@ -1,10 +1,16 @@
 package com.foxminded.controller;
 
 import com.foxminded.dto.CarDto;
+import com.foxminded.dto.CategoryDto;
 import com.foxminded.payroll.exception.CarNotFoundException;
+import com.foxminded.payroll.exception.CategoryNotFoundException;
 import com.foxminded.service.CarService;
+import com.foxminded.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,29 +21,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("api/v1/cars")
 @RequiredArgsConstructor
 public class CarController {
     private final CarService carService;
+    private final CategoryService categoryService;
 
     @GetMapping
-    public Page<CarDto> getAllCars(@RequestParam(value = "manufacturer", required = false) String manufacturer,
+    public Page<CarDto> getAllCars(@RequestParam(value = "page", defaultValue = "0") int page,
+                                   @RequestParam(value = "limit", defaultValue = "3") int limit,
+                                   @RequestParam(value = "sort", defaultValue = "id") String sortField,
+                                   @RequestParam(value = "manufacturer", required = false) String manufacturer,
                                    @RequestParam(value = "model", required = false) String model,
-                                   @RequestParam(value = "minYear", required = false) int minYear,
-                                   @RequestParam(value = "maxYear", required = false) int maxYear,
-                                   @RequestParam(value = "category", required = false) String category) {
-//        List<CarDto> allCars = carService.getAllCars();
-//        allCars = filterCarsByManufacturer(allCars, manufacturer);
-//        allCars = filterCarsByModel(allCars, model);
-//        allCars = filterCarsByMinYear(allCars, minYear);
-//        allCars = filterCarsByMaxYear(allCars, maxYear);
-//        allCars = filterCarsByCategory(allCars, category);
-//
-//        return allCars;
-        return null;
+                                   @RequestParam(value = "minYear", required = false) Integer minYear,
+                                   @RequestParam(value = "maxYear", required = false) Integer maxYear,
+                                   @RequestParam(value = "category", required = false) String categoryName) {
+        CategoryDto category = null;
+        if (categoryName != null) {
+            category = categoryService.getCategoryByName(categoryName)
+                    .orElseThrow(() -> new CategoryNotFoundException(categoryName));
+        }
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(Sort.Direction.ASC, sortField));
+        return carService.getAllCars(pageable, manufacturer, model, minYear, maxYear, category);
     }
 
     @GetMapping("/{id}")
@@ -58,36 +64,5 @@ public class CarController {
     @DeleteMapping("/{id}")
     public void deleteCar(@PathVariable("id") long id) {
         carService.deleteCarById(id);
-    }
-
-    private List<CarDto> filterCarsByManufacturer(List<CarDto> cars, String manufacturer) {
-        return manufacturer == null ? cars : cars.stream()
-                .filter(car -> car.model().manufacturer().name().equals(manufacturer))
-                .toList();
-    }
-
-    private List<CarDto> filterCarsByModel(List<CarDto> cars, String model) {
-        return model == null ? cars : cars.stream()
-                .filter(car -> car.model().name().equals(model))
-                .toList();
-    }
-
-    private List<CarDto> filterCarsByMinYear(List<CarDto> cars, int minYear) {
-        return minYear == 0 ? cars : cars.stream()
-                .filter(car -> car.year() >= minYear)
-                .toList();
-    }
-
-    private List<CarDto> filterCarsByMaxYear(List<CarDto> cars, int maxYear) {
-        return maxYear == 0 ? cars : cars.stream()
-                .filter(car -> car.year() <= maxYear)
-                .toList();
-    }
-
-    private List<CarDto> filterCarsByCategory(List<CarDto> cars, String categoryName) {
-        if (categoryName != null) {
-            cars.forEach(car -> car.categories().removeIf(category -> category.name().equals(categoryName)));
-        }
-        return cars;
     }
 }

@@ -1,4 +1,4 @@
-package com.foxminded.repository;
+package com.foxminded.dal.repository;
 
 import com.foxminded.model.Manufacturer;
 import org.springframework.data.domain.Page;
@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface ManufacturerRepository extends JpaRepository<Manufacturer, Long> {
-//    List<Manufacturer> findAll();
     Page<Manufacturer> findAll(Pageable pageable);
     Optional<Manufacturer> findByName(String name);
 }

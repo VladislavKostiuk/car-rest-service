@@ -1,4 +1,4 @@
-package com.foxminded.repository;
+package com.foxminded.dal.repository;
 
 import com.foxminded.model.Manufacturer;
 import com.foxminded.model.Model;
@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Repository
 public interface ModelRepository extends JpaRepository<Model, Long> {
-//    List<Model> findAll();
     Page<Model> findAll(Pageable pageable);
     Optional<Model> findByName(String name);
 }

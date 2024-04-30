@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,13 @@ public class Category {
 
     @ManyToMany(mappedBy = "categories")
     private List<Car> cars;
+
+    @PreRemove
+    private void removeCategoryFromCarList() {
+        for (var car : cars) {
+            car.getCategories().remove(this);
+        }
+    }
 
     public Category(long id, String name) {
         this.id = id;

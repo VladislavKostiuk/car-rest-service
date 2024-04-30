@@ -1,21 +1,25 @@
 package com.foxminded.service.impl;
 
+import com.foxminded.dal.specification.CarSpecification;
 import com.foxminded.dto.CarDto;
+import com.foxminded.dto.CategoryDto;
 import com.foxminded.mapper.CarMapper;
 import com.foxminded.mapper.CategoryMapper;
 import com.foxminded.mapper.ModelMapper;
 import com.foxminded.model.Car;
 import com.foxminded.payroll.exception.CarNotFoundException;
-import com.foxminded.repository.CarRepository;
+import com.foxminded.dal.repository.CarRepository;
 import com.foxminded.service.CarService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -30,12 +34,6 @@ public class CarServiceImpl implements CarService {
     @Override
     public Optional<CarDto> getCarById(long id) {
         Optional<Car> car = carRepository.findById(id);
-        return car.map(carMapper::mapToCarDto);
-    }
-
-    @Override
-    public Optional<CarDto> getCarByModelNameAndYear(String modelName, int year) {
-        Optional<Car> car = carRepository.findByModel_NameAndYear(modelName, year);
         return car.map(carMapper::mapToCarDto);
     }
 
@@ -66,7 +64,36 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Page<CarDto> getAllCars(Pageable pageable) {
-        return carRepository.findAll(pageable).map(carMapper::mapToCarDto);
+    public Page<CarDto> getAllCars(Pageable pageable, String manufacturer, String model,
+                                   Integer minYear, Integer maxYear, CategoryDto categoryDto) {
+        List<Specification<Car>> allSpecifications = new ArrayList<>();
+        if (manufacturer != null) {
+            allSpecifications.add(CarSpecification.haveManufacturer(manufacturer));
+        }
+        if (model != null) {
+            allSpecifications.add(CarSpecification.haveModel(model));
+        }
+        if (minYear != null) {
+            allSpecifications.add(CarSpecification.haveYearGreaterThan(minYear));
+        }
+        if (maxYear != null) {
+            allSpecifications.add(CarSpecification.haveYearLessThan(maxYear));
+        }
+        if (categoryDto != null) {
+            allSpecifications.add(CarSpecification.containCategory(categoryMapper.mapToCategory(categoryDto)));
+        }
+
+        if (allSpecifications.isEmpty()) {
+            return carRepository.findAll(pageable).map(carMapper::mapToCarDto);
+        } else {
+            Specification<Car> carSpec = Specification.allOf(allSpecifications);
+            List<CarDto> cars = carRepository.findAll(carSpec)
+                    .stream()
+                    .map(carMapper::mapToCarDto)
+                    .toList();
+            int start = (int)pageable.getOffset();
+            int end = Math.min((start + pageable.getPageSize()), cars.size());
+            return new PageImpl<>(cars.subList(start, end), pageable, cars.size());
+        }
     }
 }

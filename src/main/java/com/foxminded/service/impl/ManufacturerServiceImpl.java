@@ -1,19 +1,17 @@
 package com.foxminded.service.impl;
 
 import com.foxminded.dto.ManufacturerDto;
-import com.foxminded.mapper.CarMapper;
 import com.foxminded.mapper.ManufacturerMapper;
 import com.foxminded.mapper.ModelMapper;
 import com.foxminded.model.Manufacturer;
 import com.foxminded.payroll.exception.ManufacturerNotFoundException;
-import com.foxminded.repository.ManufacturerRepository;
+import com.foxminded.dal.repository.ManufacturerRepository;
 import com.foxminded.service.ManufacturerService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,7 +38,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     public ManufacturerDto addManufacturer(ManufacturerDto manufacturerDto) {
         Manufacturer manufacturer = manufacturerMapper.mapToManufacturer(manufacturerDto);
         return manufacturerMapper.mapToManufacturerDto(
-                manufacturerRepository.save(new Manufacturer(0L, manufacturer.getName()))
+                manufacturerRepository.save(new Manufacturer(0L, manufacturer.getName(), manufacturer.getModels()))
         );
     }
 

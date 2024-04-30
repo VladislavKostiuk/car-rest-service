@@ -28,7 +28,7 @@ public class ModelController {
     private final ModelService modelService;
 
     @GetMapping
-    public Page<ModelDto> getAllModels(@RequestParam(value = "page", defaultValue = "1") int page,
+    public Page<ModelDto> getAllModels(@RequestParam(value = "page", defaultValue = "0") int page,
                                        @RequestParam(value = "limit", defaultValue = "3") int limit,
                                        @RequestParam(value = "sort", defaultValue = "id") String sortField) {
 

@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface CategoryService {
     Optional<CategoryDto> getCategoryById(long id);
+    Optional<CategoryDto> getCategoryByName(String name);
     CategoryDto addCategory(CategoryDto categoryDto);
     CategoryDto updateCategory(long id, CategoryDto categoryDto);
     void deleteCategoryById(long id);
