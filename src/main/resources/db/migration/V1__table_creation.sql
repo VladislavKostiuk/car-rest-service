@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS model
     manufacturer_id BIGINT,
     PRIMARY KEY (id),
     FOREIGN KEY (manufacturer_id)
-        REFERENCES manufacturer
+        REFERENCES manufacturer (id)
 );
 
 CREATE TABLE IF NOT EXISTS car
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS car
     model_id  BIGINT,
     PRIMARY KEY (id),
     FOREIGN KEY (model_id)
-        REFERENCES model
+        REFERENCES model (id)
 );
 
 CREATE TABLE IF NOT EXISTS car_category
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS car_category
     car_id      BIGSERIAL NOT NULL,
     category_id BIGSERIAL NOT NULL,
     FOREIGN KEY (car_id)
-        REFERENCES car,
+        REFERENCES car (id),
     FOREIGN KEY (category_id)
-        REFERENCES category
+        REFERENCES category (id)
 );

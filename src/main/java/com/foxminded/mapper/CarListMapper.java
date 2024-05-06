@@ -7,7 +7,6 @@ import com.foxminded.model.Car;
 import com.foxminded.model.Manufacturer;
 import com.foxminded.model.Model;
 import org.mapstruct.Named;
-
 import java.util.ArrayList;
 import java.util.List;
 

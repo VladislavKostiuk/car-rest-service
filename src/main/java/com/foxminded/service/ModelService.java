@@ -1,11 +1,8 @@
 package com.foxminded.service;
 
-import com.foxminded.dto.ManufacturerDto;
 import com.foxminded.dto.ModelDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 import java.util.Optional;
 
 public interface ModelService {

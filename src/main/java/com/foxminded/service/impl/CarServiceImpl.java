@@ -17,34 +17,35 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
     private final CarMapper carMapper;
     private final ModelMapper modelMapper;
     private final CategoryMapper categoryMapper;
 
+    @Transactional
     @Override
     public Optional<CarDto> getCarById(long id) {
         Optional<Car> car = carRepository.findById(id);
         return car.map(carMapper::mapToCarDto);
     }
 
+    @Transactional
     @Override
     public CarDto addCar(CarDto carDto) {
         Car car = carMapper.mapToCar(carDto);
         return carMapper.mapToCarDto(carRepository.save(
-                new Car(0L, car.getObjectId(), car.getYear(), car.getModel(), car.getCategories())
-                ));
+                new Car(0L, car.getObjectId(), car.getYear(),
+                        car.getModel(), car.getCategories())));
     }
 
+    @Transactional
     @Override
     public CarDto updateCar(long id, CarDto carDto) {
         Optional<Car> car = carRepository.findById(id);
@@ -58,11 +59,13 @@ public class CarServiceImpl implements CarService {
         }
     }
 
+    @Transactional
     @Override
     public void deleteCarById(long id) {
         carRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public Page<CarDto> getAllCars(Pageable pageable, String manufacturer, String model,
                                    Integer minYear, Integer maxYear, CategoryDto categoryDto) {

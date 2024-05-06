@@ -1,19 +1,13 @@
 package com.foxminded.mapper;
 
-import com.foxminded.dto.CarDto;
-import com.foxminded.dto.CategoryDto;
+
 import com.foxminded.dto.ManufacturerDto;
 import com.foxminded.dto.ModelDto;
-import com.foxminded.model.Car;
-import com.foxminded.model.Category;
 import com.foxminded.model.Manufacturer;
 import com.foxminded.model.Model;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ModelMapper extends CarListMapper{

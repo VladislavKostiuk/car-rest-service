@@ -13,30 +13,31 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class ModelServiceImpl implements ModelService {
     private final ModelRepository modelRepository;
     private final ModelMapper modelMapper;
     private final ManufacturerMapper manufacturerMapper;
     private final CarMapper carMapper;
 
+    @Transactional
     @Override
     public Optional<ModelDto> getModelById(long id) {
         Optional<Model> model = modelRepository.findById(id);
         return model.map(modelMapper::mapToModelDto);
     }
 
+    @Transactional
     @Override
     public Optional<ModelDto> getModelByName(String name) {
         Optional<Model> model = modelRepository.findByName(name);
         return model.map(modelMapper::mapToModelDto);
     }
 
+    @Transactional
     @Override
     public ModelDto addModel(ModelDto modelDto) {
         Model model = modelMapper.mapToModel(modelDto);
@@ -45,6 +46,7 @@ public class ModelServiceImpl implements ModelService {
         );
     }
 
+    @Transactional
     @Override
     public ModelDto updateModel(long id, ModelDto modelDto) {
         Optional<Model> model = modelRepository.findById(id);
@@ -58,11 +60,13 @@ public class ModelServiceImpl implements ModelService {
         }
     }
 
+    @Transactional
     @Override
     public void deleteModelById(long id) {
         modelRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public Page<ModelDto> getAllModels(Pageable pageable) {
         return modelRepository.findAll(pageable).map(modelMapper::mapToModelDto);

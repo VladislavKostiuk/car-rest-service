@@ -2,7 +2,6 @@ package com.foxminded.mapper;
 
 import com.foxminded.dto.CategoryDto;
 import com.foxminded.model.Category;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,7 @@ public interface CategoryListMapper {
 
         List<Category> categories = new ArrayList<>();
         for (var categoryDto : categoriesDto) {
-            categories.add(new Category(categoryDto.id(), categoryDto.name()));
+            categories.add(new Category(categoryDto.id(), categoryDto.name(), new ArrayList<>()));
         }
         return categories;
     }

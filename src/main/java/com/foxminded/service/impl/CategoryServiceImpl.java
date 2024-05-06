@@ -12,39 +12,44 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+
+    @Transactional
     @Override
     public Optional<CategoryDto> getCategoryById(long id) {
         Optional<Category> category = categoryRepository.findById(id);
         return category.map(categoryMapper::mapToCategoryDto);
     }
 
+    @Transactional
     @Override
     public Optional<CategoryDto> getCategoryByName(String name) {
         Optional<Category> category = categoryRepository.findByName(name);
         return category.map(categoryMapper::mapToCategoryDto);
     }
 
+    @Transactional
     @Override
     public CategoryDto addCategory(CategoryDto categoryDto) {
         Category category = categoryMapper.mapToCategory(categoryDto);
         return categoryMapper.mapToCategoryDto(
-                categoryRepository.save(new Category(0L, category.getName()))
+                categoryRepository.save(new Category(0L, category.getName(), category.getCars()))
         );
     }
 
+    @Transactional
     @Override
     public CategoryDto updateCategory(long id, CategoryDto categoryDto) {
         Optional<Category> category = categoryRepository.findById(id);
         if (category.isPresent()) {
-            Category updatedCategory = new Category(id, categoryDto.name());
+            Category updatedCategory = new Category(id, categoryDto.name(), new ArrayList<>());
             return categoryMapper.mapToCategoryDto(
                     categoryRepository.save(updatedCategory)
             );
@@ -53,11 +58,13 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    @Transactional
     @Override
     public void deleteCategoryById(long id) {
         categoryRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public Page<CategoryDto> getAllCategories(Pageable pageable) {
         return categoryRepository.findAll(pageable).map(categoryMapper::mapToCategoryDto);

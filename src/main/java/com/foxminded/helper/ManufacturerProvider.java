@@ -6,10 +6,11 @@ import com.foxminded.dto.ModelDto;
 import com.foxminded.payroll.exception.CarNotFoundException;
 import com.foxminded.payroll.exception.ManufacturerNotFoundException;
 import com.foxminded.payroll.exception.ModelNotFoundException;
+import com.foxminded.payroll.exception.SeveralCarsFoundException;
+import com.foxminded.payroll.exception.SeveralModelsFoundException;
 import com.foxminded.service.ManufacturerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 @Component
@@ -33,7 +34,7 @@ public class ManufacturerProvider {
         if (models.isEmpty()) {
             throw new ModelNotFoundException(modelName);
         } else if (models.size() > 1) {
-            throw new IllegalStateException("Two or more models were found with the same name");
+            throw new SeveralModelsFoundException();
         }
 
         return models.get(0);
@@ -49,7 +50,7 @@ public class ManufacturerProvider {
         if (cars.isEmpty()) {
             throw new CarNotFoundException();
         } else if (cars.size() > 1) {
-            throw new IllegalStateException("Two or more cars were found with the same model and year");
+            throw new SeveralCarsFoundException();
         }
 
         return cars.get(0);

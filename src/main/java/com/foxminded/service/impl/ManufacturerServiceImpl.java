@@ -16,24 +16,26 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class ManufacturerServiceImpl implements ManufacturerService {
     private final ManufacturerRepository manufacturerRepository;
     private final ManufacturerMapper manufacturerMapper;
     private final ModelMapper modelMapper;
 
+    @Transactional
     @Override
     public Optional<ManufacturerDto> getManufacturerById(long id) {
         Optional<Manufacturer> manufacturer = manufacturerRepository.findById(id);
         return manufacturer.map(manufacturerMapper::mapToManufacturerDto);
     }
 
+    @Transactional
     @Override
     public Optional<ManufacturerDto> getManufacturerByName(String name) {
         Optional<Manufacturer> manufacturer = manufacturerRepository.findByName(name);
         return manufacturer.map(manufacturerMapper::mapToManufacturerDto);
     }
 
+    @Transactional
     @Override
     public ManufacturerDto addManufacturer(ManufacturerDto manufacturerDto) {
         Manufacturer manufacturer = manufacturerMapper.mapToManufacturer(manufacturerDto);
@@ -42,6 +44,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
         );
     }
 
+    @Transactional
     @Override
     public ManufacturerDto updateManufacturer(long id, ManufacturerDto manufacturerDto) {
         Optional<Manufacturer> manufacturer = manufacturerRepository.findById(id);
@@ -56,11 +59,13 @@ public class ManufacturerServiceImpl implements ManufacturerService {
         }
     }
 
+    @Transactional
     @Override
     public void deleteManufacturerById(long id) {
         manufacturerRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public Page<ManufacturerDto> getAllManufacturers(Pageable pageable) {
         return manufacturerRepository.findAll(pageable).map(manufacturerMapper::mapToManufacturerDto);
