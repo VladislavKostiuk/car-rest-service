@@ -7,6 +7,7 @@ import com.foxminded.dto.ModelDto;
 import com.foxminded.helper.ManufacturerProvider;
 import com.foxminded.payroll.exception.CarNotFoundException;
 import com.foxminded.service.CarService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,19 +33,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(SpringExtension.class)
 class ManufacturerCarControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
     private CarService carService;
+
     @MockBean
     private ManufacturerProvider manufacturerProvider;
-    private ObjectMapper objectMapper;
+    private static ObjectMapper objectMapper;
     private ModelDto modelDto;
     private CarDto carDto;
 
-    @BeforeEach
-    void setup() {
+    @BeforeAll
+    static void setup() {
         objectMapper = new ObjectMapper();
+    }
+
+    @BeforeEach
+    void init() {
         ManufacturerDto manufacturerDto = new ManufacturerDto(1L, "manufacturer", new ArrayList<>());
         modelDto = new ModelDto(1L, "model", manufacturerDto, new ArrayList<>());
         carDto = new CarDto(1L, "car", 2020, modelDto, new ArrayList<>());

@@ -33,10 +33,13 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {ManufacturerMapperImpl.class, ModelMapperImpl.class})
 class ManufacturerServiceImplTest {
     private ManufacturerService manufacturerService;
+
     @Mock
     private ManufacturerRepository manufacturerRepository;
+
     @Autowired
     private ManufacturerMapper manufacturerMapper;
+
     @Autowired
     private ModelMapper modelMapper;
     private ManufacturerDto manufacturerDto;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foxminded.dto.CarDto;
 import com.foxminded.service.CarService;
 import com.foxminded.service.CategoryService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,18 +36,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(SpringExtension.class)
 class CarControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
     private CarService carService;
+
     @MockBean
     private CategoryService categoryService;
-    private ObjectMapper objectMapper;
+    private static ObjectMapper objectMapper;
     private CarDto carDto;
 
-    @BeforeEach
-    void setup() {
+    @BeforeAll
+    static void setup() {
         objectMapper = new ObjectMapper();
+    }
+
+    @BeforeEach
+    void init() {
         carDto = new CarDto(1L, "test", 2024, null, new ArrayList<>());
     }
 

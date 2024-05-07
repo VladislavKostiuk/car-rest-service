@@ -36,15 +36,20 @@ import static org.mockito.Mockito.when;
 })
 class CarServiceImplTest {
     private CarService carService;
+
     @Mock
     private CarRepository carRepository;
+
     @Autowired
     private CarMapper carMapper;
+
     @Autowired
     private ModelMapperImpl modelMapper;
+
     @Autowired
     private CategoryMapper categoryMapper;
     private CarDto carDto;
+
     @BeforeEach
     void setup() {
         carService = new CarServiceImpl(carRepository, carMapper, modelMapper, categoryMapper);
@@ -105,5 +110,4 @@ class CarServiceImplTest {
         assertEquals(expectedCarDtos, actualCarDtos);
         verify(carRepository).findAll(pageable);
     }
-
 }

@@ -3,6 +3,7 @@ package com.foxminded.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foxminded.dto.CategoryDto;
 import com.foxminded.service.CategoryService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,16 +33,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(SpringExtension.class)
 class CategoryControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
     private CategoryService categoryService;
-    private ObjectMapper objectMapper;
+    private static ObjectMapper objectMapper;
     private CategoryDto categoryDto;
 
-    @BeforeEach
-    void setup() {
+    @BeforeAll
+    static void setup() {
         objectMapper = new ObjectMapper();
+    }
+
+    @BeforeEach
+    void init() {
         categoryDto = new CategoryDto(1L, "test");
     }
 

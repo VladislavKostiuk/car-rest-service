@@ -37,12 +37,16 @@ import static org.mockito.Mockito.when;
 })
 class ModelServiceImplTest {
     private ModelService modelService;
+
     @Mock
     private ModelRepository modelRepository;
+
     @Autowired
     private ModelMapper modelMapper;
+
     @Autowired
     private ManufacturerMapper manufacturerMapper;
+
     @Autowired
     private CarMapper carMapper;
     private ModelDto modelDto;

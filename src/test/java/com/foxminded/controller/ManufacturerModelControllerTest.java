@@ -6,6 +6,7 @@ import com.foxminded.dto.ModelDto;
 import com.foxminded.helper.ManufacturerProvider;
 import com.foxminded.payroll.exception.ModelNotFoundException;
 import com.foxminded.service.ModelService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,18 +32,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(SpringExtension.class)
 class ManufacturerModelControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
     private ModelService modelService;
+
     @MockBean
     private ManufacturerProvider manufacturerProvider;
-    private ObjectMapper objectMapper;
+    private static ObjectMapper objectMapper;
     private ModelDto modelDto;
 
-    @BeforeEach
-    void setup() {
+    @BeforeAll
+    static void setup() {
         objectMapper = new ObjectMapper();
+    }
+
+    @BeforeEach
+    void init() {
         modelDto = new ModelDto(1L, "model",
                 new ManufacturerDto(1L, "manufacturer", new ArrayList<>()),
                 new ArrayList<>());

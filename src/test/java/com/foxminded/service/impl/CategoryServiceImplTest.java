@@ -29,8 +29,10 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {CategoryMapperImpl.class})
 class CategoryServiceImplTest {
     private CategoryService categoryService;
+
     @Mock
     private CategoryRepository categoryRepository;
+
     @Autowired
     private CategoryMapper categoryMapper;
     private CategoryDto categoryDto;
