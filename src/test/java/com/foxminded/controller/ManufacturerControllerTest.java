@@ -55,7 +55,7 @@ class ManufacturerControllerTest {
     }
 
     @Test
-    void testGetAllManufacturers() throws Exception {
+    void testGetManufacturers() throws Exception {
         Pageable pageable = PageRequest.of(0,3);
         PageImpl<ManufacturerDto> manufacturers = new PageImpl<>(List.of(manufacturerDto, manufacturerDto, manufacturerDto), pageable, 1);
         when(manufacturerService.getAllManufacturers(any())).thenReturn(manufacturers);

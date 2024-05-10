@@ -55,7 +55,7 @@ class ModelControllerTest {
     }
 
     @Test
-    void testGetAllModels() throws Exception {
+    void testGetModels() throws Exception {
         Pageable pageable = PageRequest.of(0,3);
         PageImpl<ModelDto> models = new PageImpl<>(List.of(modelDto, modelDto, modelDto), pageable, 1);
         when(modelService.getAllModels(any())).thenReturn(models);

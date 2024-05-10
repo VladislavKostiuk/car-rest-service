@@ -53,7 +53,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    void testGetAllCategories_Success() throws Exception {
+    void testGetCategories_Success() throws Exception {
         Pageable pageable = PageRequest.of(0,3);
         PageImpl<CategoryDto> categories = new PageImpl<>(List.of(categoryDto, categoryDto, categoryDto), pageable, 1);
         when(categoryService.getAllCategories(any())).thenReturn(categories);
