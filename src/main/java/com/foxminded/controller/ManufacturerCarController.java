@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +72,7 @@ public class ManufacturerCarController {
                                                            @PathVariable("modelName") String modelName,
                                                        @Parameter(description = "year of car to be added")
                                                            @PathVariable("year") int year,
-                                                       @RequestBody CarDto carDto) {
+                                                       @Valid @RequestBody CarDto carDto) {
         if (carDto.year() != year || !carDto.model().name().equals(modelName)
                 || !carDto.model().manufacturer().name().equals(manufacturerName)) {
             throw new UrlDoesNotMatchBodyException();
@@ -99,7 +100,7 @@ public class ManufacturerCarController {
                                                             @PathVariable("modelName") String modelName,
                                                         @Parameter(description = "year of car to be updated")
                                                             @PathVariable("year") int year,
-                                                        @RequestBody CarDto carDto) {
+                                                        @Valid @RequestBody CarDto carDto) {
         CarDto manufacturerCar = manufacturerProvider.getManufacturerCar(manufacturerName, modelName, year);
         CarDto updatedCar = new CarDto(manufacturerCar.id(), carDto.objectId(),
                 carDto.year(), carDto.model(), carDto.categories());

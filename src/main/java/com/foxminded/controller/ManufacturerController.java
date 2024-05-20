@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -77,7 +78,7 @@ public class ManufacturerController {
     })
     @PostMapping
     public ResponseEntity<ManufacturerDto> createManufacturer(@Parameter(description = "new manufacturer data")
-                                                                  @RequestBody ManufacturerDto manufacturerDto) {
+                                                                  @Valid @RequestBody ManufacturerDto manufacturerDto) {
         ManufacturerDto manufacturer = manufacturerService.addManufacturer(manufacturerDto);
         return new ResponseEntity<>(manufacturer, HttpStatus.CREATED);
     }
@@ -94,7 +95,7 @@ public class ManufacturerController {
     public ResponseEntity<ManufacturerDto> updateManufacturer(@Parameter(description = "id of manufacturer to be searched")
                                                                   @PathVariable("id") long id,
                                                               @Parameter(description = "manufacturer data that is used for update")
-                                                              @RequestBody ManufacturerDto manufacturerDto) {
+                                                              @Valid @RequestBody ManufacturerDto manufacturerDto) {
         ManufacturerDto manufacturer = manufacturerService.updateManufacturer(id, manufacturerDto);
         return ResponseEntity.ok(manufacturer);
     }

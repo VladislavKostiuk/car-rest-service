@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -76,7 +77,7 @@ public class CategoryController {
     })
     @PostMapping
     public ResponseEntity<CategoryDto> createCategory(@Parameter(description = "new category data")
-                                                          @RequestBody CategoryDto categoryDto) {
+                                                          @Valid @RequestBody CategoryDto categoryDto) {
         CategoryDto category = categoryService.addCategory(categoryDto);
         return new ResponseEntity<>(category, HttpStatus.CREATED);
     }
@@ -93,7 +94,7 @@ public class CategoryController {
     public ResponseEntity<CategoryDto> updateCategory(@Parameter(description = "id of category to be searched")
                                                           @PathVariable("id") long id,
                                                       @Parameter(description = "category data that is used for update")
-                                                          @RequestBody CategoryDto categoryDto) {
+                                                          @Valid @RequestBody CategoryDto categoryDto) {
         CategoryDto category = categoryService.updateCategory(id, categoryDto);
         return ResponseEntity.ok(category);
     }

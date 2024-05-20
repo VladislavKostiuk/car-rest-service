@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,7 +66,7 @@ public class ManufacturerModelController {
                                                                @PathVariable("manufacturerName") String manufacturerName,
                                                            @Parameter(description = "name of model to be added")
                                                                @PathVariable("modelName") String modelName,
-                                                           @RequestBody ModelDto modelDto) {
+                                                           @Valid @RequestBody ModelDto modelDto) {
         if (!modelDto.name().equals(modelName) || !modelDto.manufacturer().name().equals(manufacturerName)) {
             throw new UrlDoesNotMatchBodyException();
         }
@@ -91,7 +92,7 @@ public class ManufacturerModelController {
                                                                 @PathVariable("manufacturerName") String manufacturerName,
                                                             @Parameter(description = "name of model to be updated")
                                                                 @PathVariable("modelName") String modelName,
-                                                            @RequestBody ModelDto modelDto) {
+                                                            @Valid @RequestBody ModelDto modelDto) {
         ModelDto manufacturerModel = manufacturerProvider.getManufacturerModelByName(manufacturerName, modelName);
         ModelDto updatedModel = new ModelDto(manufacturerModel.id(), modelDto.name(), modelDto.manufacturer(), modelDto.cars());
         ModelDto model = modelService.updateModel(manufacturerModel.id(), updatedModel);
