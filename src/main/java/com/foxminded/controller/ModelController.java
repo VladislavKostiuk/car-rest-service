@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -77,7 +78,7 @@ public class ModelController {
     })
     @PostMapping
     public ResponseEntity<ModelDto> createModel(@Parameter(description = "new model data")
-                                                    @RequestBody ModelDto modelDto) {
+                                                    @Valid @RequestBody ModelDto modelDto) {
         ModelDto model = modelService.addModel(modelDto);
         return new ResponseEntity<>(model, HttpStatus.CREATED);
     }
@@ -94,7 +95,7 @@ public class ModelController {
     public ResponseEntity<ModelDto> updateModel(@Parameter(description = "id of model to be searched")
                                                     @PathVariable("id") long id,
                                                 @Parameter(description = "model data that is used for update")
-                                                    @RequestBody ModelDto modelDto) {
+                                                    @RequestBody @Valid ModelDto modelDto) {
         ModelDto model = modelService.updateModel(id, modelDto);
         return ResponseEntity.ok(model);
     }
