@@ -59,7 +59,7 @@ class CarControllerTest {
     }
 
     @Test
-    void testGetAllCars() throws Exception {
+    void testGetCars() throws Exception {
         Pageable pageable = PageRequest.of(0,3);
         PageImpl<CarDto> cars = new PageImpl<>(List.of(carDto, carDto, carDto), pageable, 1);
         when(carService.getAllCars(any(), any(), any(), any(), any(), any())).thenReturn(cars);
