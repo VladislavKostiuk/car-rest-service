@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -95,7 +96,7 @@ public class CarController {
     })
     @PostMapping
     public ResponseEntity<CarDto> createCar(@Parameter(description = "new car data")
-                                                @RequestBody CarDto carDto) {
+                                                @Valid @RequestBody CarDto carDto) {
         CarDto car = carService.addCar(carDto);
         return new ResponseEntity<>(car, HttpStatus.CREATED);
     }
@@ -111,7 +112,8 @@ public class CarController {
     @PutMapping("/{id}")
     public ResponseEntity<CarDto> updateCar(@Parameter(description = "id of car to be searched")
                                                 @PathVariable("id") long id,
-                                            @Parameter(description = "car data that is used for update") @RequestBody CarDto carDto) {
+                                            @Parameter(description = "car data that is used for update")
+                                                @Valid @RequestBody CarDto carDto) {
         CarDto car = carService.updateCar(id, carDto);
         return ResponseEntity.ok(car);
     }

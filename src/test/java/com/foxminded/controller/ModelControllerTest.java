@@ -1,6 +1,7 @@
 package com.foxminded.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foxminded.dto.ManufacturerDto;
 import com.foxminded.dto.ModelDto;
 import com.foxminded.service.ModelService;
 import org.junit.jupiter.api.BeforeAll;
@@ -51,7 +52,8 @@ class ModelControllerTest {
 
     @BeforeEach
     void init() {
-        modelDto = new ModelDto(1L, "test", null, new ArrayList<>());
+        modelDto = new ModelDto(1L, "test",
+                new ManufacturerDto(0L, "", new ArrayList<>()), new ArrayList<>());
     }
 
     @Test

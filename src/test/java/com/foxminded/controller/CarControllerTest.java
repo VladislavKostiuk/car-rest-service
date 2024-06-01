@@ -2,6 +2,7 @@ package com.foxminded.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foxminded.dto.CarDto;
+import com.foxminded.dto.ModelDto;
 import com.foxminded.service.CarService;
 import com.foxminded.service.CategoryService;
 import org.junit.jupiter.api.BeforeAll;
@@ -55,7 +56,8 @@ class CarControllerTest {
 
     @BeforeEach
     void init() {
-        carDto = new CarDto(1L, "test", 2024, null, new ArrayList<>());
+        carDto = new CarDto(1L, "test", 2024,
+                new ModelDto(0, "", null, new ArrayList<>()), new ArrayList<>());
     }
 
     @Test
